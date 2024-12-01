@@ -9,7 +9,7 @@ public class UserMapper {
         return User.builder()
                 .firstName(userCreationDTO.firstName())
                 .lastName(userCreationDTO.lastName())
-                .birthdate(userCreationDTO.bithdate())
+                .birthdate(userCreationDTO.birthdate())
                 .email(userCreationDTO.email())
                 .build();
     }
@@ -18,7 +18,7 @@ public class UserMapper {
         return User.builder()
                 .firstName(userUpdateDTO.firstName())
                 .lastName(userUpdateDTO.lastName())
-                .birthdate(userUpdateDTO.bithdate())
+                .birthdate(userUpdateDTO.birthdate())
                 .email(userUpdateDTO.email())
                 .build();
     }

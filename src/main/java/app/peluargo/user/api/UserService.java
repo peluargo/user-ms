@@ -3,7 +3,13 @@ package app.peluargo.user.api;
 import app.peluargo.user.api.dtos.UserCreationDTO;
 import app.peluargo.user.api.dtos.UserDTO;
 import app.peluargo.user.api.dtos.UserUpdateDTO;
+import app.peluargo.user.api.exceptions.InvalidUserEmailException;
+import app.peluargo.user.api.exceptions.UserEmailIsNotAvailableException;
+import app.peluargo.user.api.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -15,7 +21,7 @@ public class UserService {
 
     public UserDTO create(UserCreationDTO userCreationDTO) {
         if (this.isEmailUnavailable(userCreationDTO.email())) {
-            throw new RuntimeException("Email is not available");
+            throw new UserEmailIsNotAvailableException();
         }
 
         User createdUser = this.userRepository.save(UserMapper.toUser(userCreationDTO));
@@ -23,14 +29,17 @@ public class UserService {
         return UserMapper.toUserDTO(createdUser);
     }
 
-    public UserDTO searchOne(UUID id) {
-        User user = this.userRepository.findById(id).orElseThrow();
+    public Page<UserDTO> searchAll(Pageable pageable) {
+        return this.userRepository.findAll(pageable).map(UserMapper::toUserDTO);
+    }
 
+    public UserDTO searchOne(UUID id) {
+        User user = this.userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         return UserMapper.toUserDTO(user);
     }
 
     public UserDTO update(UUID id, UserUpdateDTO userUpdateDTO) {
-        User user = this.userRepository.findById(id).orElseThrow();
+        User user = this.userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
         if (userUpdateDTO.firstName() != null) {
             user.setFirstName(userUpdateDTO.firstName());
@@ -40,13 +49,13 @@ public class UserService {
             user.setLastName(userUpdateDTO.lastName());
         }
 
-        if (userUpdateDTO.bithdate() != null) {
-            user.setBirthdate(userUpdateDTO.bithdate());
+        if (userUpdateDTO.birthdate() != null) {
+            user.setBirthdate(userUpdateDTO.birthdate());
         }
 
         if (userUpdateDTO.email() != null) {
             if (this.isEmailUnavailable(userUpdateDTO.email())) {
-                throw new RuntimeException("Email is not available");
+                throw new UserEmailIsNotAvailableException();
             }
 
             user.setEmail(userUpdateDTO.email());

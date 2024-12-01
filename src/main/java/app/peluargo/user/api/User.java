@@ -3,6 +3,7 @@ package app.peluargo.user.api;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class User {
     private String lastName;
 
     @Column(nullable = false)
-    private Date birthdate;
+    private LocalDate birthdate;
 
     @Column(nullable = false, unique = true)
     private String email;
