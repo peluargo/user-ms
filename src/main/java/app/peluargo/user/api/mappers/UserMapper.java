@@ -1,5 +1,6 @@
-package app.peluargo.user.api;
+package app.peluargo.user.api.mappers;
 
+import app.peluargo.user.api.entities.User;
 import app.peluargo.user.api.dtos.UserCreationDTO;
 import app.peluargo.user.api.dtos.UserDTO;
 import app.peluargo.user.api.dtos.UserUpdateDTO;

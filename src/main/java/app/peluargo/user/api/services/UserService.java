@@ -1,18 +1,25 @@
-package app.peluargo.user.api;
+package app.peluargo.user.api.services;
 
 import app.peluargo.user.api.dtos.UserCreationDTO;
 import app.peluargo.user.api.dtos.UserDTO;
 import app.peluargo.user.api.dtos.UserUpdateDTO;
-import app.peluargo.user.api.exceptions.InvalidUserEmailException;
+import app.peluargo.user.api.entities.User;
 import app.peluargo.user.api.exceptions.UserEmailIsNotAvailableException;
 import app.peluargo.user.api.exceptions.UserNotFoundException;
+import app.peluargo.user.api.mappers.UserMapper;
+import app.peluargo.user.api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -29,7 +36,14 @@ public class UserService {
         return UserMapper.toUserDTO(createdUser);
     }
 
-    public Page<UserDTO> searchAll(Pageable pageable) {
+    public Page<UserDTO> searchAll(
+            @PageableDefault(value = 50) Pageable pageable,
+            List<UUID> ids
+        ) {
+        if (ids != null) {
+            return this.userRepository.findAllByIdIn(pageable, ids).map(UserMapper::toUserDTO);
+        }
+
         return this.userRepository.findAll(pageable).map(UserMapper::toUserDTO);
     }
 

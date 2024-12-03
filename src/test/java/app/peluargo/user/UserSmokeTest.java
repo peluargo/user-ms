@@ -1,8 +1,8 @@
 package app.peluargo.user;
 
-import app.peluargo.user.api.UserController;
-import app.peluargo.user.api.UserRepository;
-import app.peluargo.user.api.UserService;
+import app.peluargo.user.api.controllers.UserController;
+import app.peluargo.user.api.repositories.UserRepository;
+import app.peluargo.user.api.services.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

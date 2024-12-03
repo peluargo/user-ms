@@ -1,6 +1,6 @@
-package app.peluargo.user.api;
+package app.peluargo.user.api.commons;
 
-import app.peluargo.user.api.dtos.ApiErrorResponseDTO;
+import app.peluargo.user.api.commons.dtos.ApiErrorResponseDTO;
 import app.peluargo.user.api.exceptions.InvalidUserEmailException;
 import app.peluargo.user.api.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
