@@ -1,10 +1,9 @@
 package app.peluargo.user.api.controllers;
 
-import app.peluargo.user.api.services.UserService;
 import app.peluargo.user.api.dtos.UserCreationDTO;
 import app.peluargo.user.api.dtos.UserDTO;
 import app.peluargo.user.api.dtos.UserUpdateDTO;
-import jakarta.ws.rs.QueryParam;
+import app.peluargo.user.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RestController
