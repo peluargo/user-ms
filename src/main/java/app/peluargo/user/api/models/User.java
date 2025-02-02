@@ -1,4 +1,4 @@
-package app.peluargo.user.api.entities;
+package app.peluargo.user.api.models;
 
 import jakarta.persistence.*;
 import lombok.*;

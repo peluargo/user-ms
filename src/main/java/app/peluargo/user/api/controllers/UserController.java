@@ -1,5 +1,7 @@
 package app.peluargo.user.api.controllers;
 
+import app.peluargo.user.api.commons.dtos.ApiResponseDTO;
+import app.peluargo.user.api.commons.mappers.ApiResponseMapper;
 import app.peluargo.user.api.dtos.UserCreationDTO;
 import app.peluargo.user.api.dtos.UserDTO;
 import app.peluargo.user.api.dtos.UserUpdateDTO;
@@ -24,36 +26,43 @@ public class UserController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<UserDTO> create(@RequestBody UserCreationDTO userCreationDTO) {
+    public ResponseEntity<ApiResponseDTO<UserDTO>> create(@RequestBody UserCreationDTO userCreationDTO) {
         UserDTO userDTO = this.userService.create(userCreationDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+        ApiResponseDTO<UserDTO> body = ApiResponseMapper.toApiResponse(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> searchOne(@PathVariable("id") UUID id) {
+    public ResponseEntity<ApiResponseDTO<UserDTO>> searchOne(@PathVariable("id") UUID id) {
         UserDTO userDTO = this.userService.searchOne(id);
-        return ResponseEntity.ok(userDTO);
+        ApiResponseDTO<UserDTO> body = ApiResponseMapper.toApiResponse(userDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @GetMapping
-    public ResponseEntity<Page<UserDTO>> searchAll(
+    public ResponseEntity<ApiResponseDTO<Page<UserDTO>>> searchAll(
             @PageableDefault Pageable pageable,
             @RequestParam(required = false) List<UUID> ids
     ) {
         Page<UserDTO> users = this.userService.searchAll(pageable, ids);
-        return ResponseEntity.ok(users);
+        ApiResponseDTO<Page<UserDTO>> body = ApiResponseMapper.toApiResponse(users);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable("id") UUID id, @RequestBody UserUpdateDTO userUpdateDTO) {
+    public ResponseEntity<ApiResponseDTO<UserDTO>> update(
+            @PathVariable("id") UUID id,
+            @RequestBody UserUpdateDTO userUpdateDTO
+    ) {
         UserDTO userDTO = this.userService.update(id, userUpdateDTO);
-        return ResponseEntity.ok(userDTO);
+        ApiResponseDTO<UserDTO> body = ApiResponseMapper.toApiResponse(userDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         this.userService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

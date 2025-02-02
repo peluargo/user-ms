@@ -3,7 +3,7 @@ package app.peluargo.user.api.services;
 import app.peluargo.user.api.dtos.UserCreationDTO;
 import app.peluargo.user.api.dtos.UserDTO;
 import app.peluargo.user.api.dtos.UserUpdateDTO;
-import app.peluargo.user.api.entities.User;
+import app.peluargo.user.api.models.User;
 import app.peluargo.user.api.exceptions.UserEmailIsNotAvailableException;
 import app.peluargo.user.api.exceptions.UserNotFoundException;
 import app.peluargo.user.api.mappers.UserMapper;
@@ -22,8 +22,8 @@ public class UserService {
     private UserRepository userRepository;
 
     public UserDTO create(UserCreationDTO userCreationDTO) {
-        if (this.isEmailUnavailable(userCreationDTO.email())) {
-            throw new UserEmailIsNotAvailableException();
+        if (this.emailIsUnavailable(userCreationDTO.email())) {
+            throw new UserEmailIsNotAvailableException(userCreationDTO.email());
         }
 
         User createdUser = this.userRepository.save(UserMapper.toUser(userCreationDTO));
@@ -40,12 +40,12 @@ public class UserService {
     }
 
     public UserDTO searchOne(UUID id) {
-        User user = this.userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         return UserMapper.toUserDTO(user);
     }
 
     public UserDTO update(UUID id, UserUpdateDTO userUpdateDTO) {
-        User user = this.userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
         if (userUpdateDTO.firstName() != null) {
             user.setFirstName(userUpdateDTO.firstName());
@@ -60,8 +60,8 @@ public class UserService {
         }
 
         if (userUpdateDTO.email() != null) {
-            if (this.isEmailUnavailable(userUpdateDTO.email())) {
-                throw new UserEmailIsNotAvailableException();
+            if (this.emailIsUnavailable(userUpdateDTO.email())) {
+                throw new UserEmailIsNotAvailableException(userUpdateDTO.email());
             }
 
             user.setEmail(userUpdateDTO.email());
@@ -76,7 +76,7 @@ public class UserService {
         this.userRepository.deleteById(id);
     }
 
-    public boolean isEmailUnavailable(String email) {
+    public boolean emailIsUnavailable(String email) {
         return this.userRepository.existsByEmail(email);
     }
 }
