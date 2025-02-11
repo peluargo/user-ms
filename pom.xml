@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>app.peluargo</groupId>
-	<artifactId>user-ms</artifactId>
+	<artifactId>account-ms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>user-ms</name>
+	<name>account-ms</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -78,10 +78,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

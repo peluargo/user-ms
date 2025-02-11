@@ -28,4 +28,9 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Transient
+    public String getFullName() {
+        return String.format("%s %s", this.firstName, this.lastName);
+    }
 }

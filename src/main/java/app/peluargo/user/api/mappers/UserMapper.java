@@ -1,9 +1,8 @@
 package app.peluargo.user.api.mappers;
 
-import app.peluargo.user.api.models.User;
 import app.peluargo.user.api.dtos.UserCreationDTO;
 import app.peluargo.user.api.dtos.UserDTO;
-import app.peluargo.user.api.dtos.UserUpdateDTO;
+import app.peluargo.user.api.models.User;
 
 public class UserMapper {
     public static User toUser(UserCreationDTO userCreationDTO) {
@@ -20,6 +19,7 @@ public class UserMapper {
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
+                user.getFullName(),
                 user.getBirthdate(),
                 user.getEmail()
         );

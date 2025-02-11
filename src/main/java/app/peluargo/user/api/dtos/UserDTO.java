@@ -7,6 +7,7 @@ public record UserDTO(
         UUID id,
         String firstName,
         String lastName,
+        String fullName,
         LocalDate birthdate,
         String email
 ) {
